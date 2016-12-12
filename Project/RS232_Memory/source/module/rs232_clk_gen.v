@@ -53,7 +53,7 @@ begin
     
     else
     begin
-      cnt <= cnt + 1;                          // Count up
+      cnt <= cnt + 20'd1;                      // Count up
       clk_rs232_en <= 0;                       // Keep enable deasserted
     end
 

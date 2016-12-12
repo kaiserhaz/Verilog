@@ -21,7 +21,7 @@ module rs232_mem_macro( clk,                   // Clock
 // Ports
 input        clk;
 input        rst;
-input [13:0] mem_addr;
+input [7:0]  mem_addr;
 input        mem_write;
 input [7:0]  mem_data_in;
 
@@ -30,8 +30,12 @@ output [7:0] mem_data_out;
 // Datatype
 reg [7:0] mem_data_out;                        // Output register
 
+// Parameters
+parameter MEM_MAX_CASE = 256;
+//parameter MEM_MAX_CASE = 8192;                 // Memory cases (for test only)
+
 // Variables
-reg [7:0] mem_case [0:16383];                  // Memory register cases
+reg [7:0] mem_case [0:MEM_MAX_CASE-1];         // Memory register cases
 
 integer i;                                     // Counter variable
 
@@ -42,7 +46,7 @@ begin
   if(rst)
   begin
   
-    for(i=0; i<16384; i=i+1)
+    for(i=0; i<MEM_MAX_CASE; i=i+1)
     begin
       mem_case[i] <= 0;                        // Write 0 to memory case at the specified address
     end
@@ -53,6 +57,8 @@ begin
 
   else
   begin
+    
+    i <= 0;
     
     if(mem_write == 1)                         // Write case
     begin

@@ -27,10 +27,10 @@ vlog -work work source/module/rs232_memory.v
 ## Compile all testbenches
 echo "\n\n\n"
 echo "/**         Testbench Compile        **/"
-vlog -work work source/testbench/rs232_clk_gen_tb.v
-vlog -work work source/testbench/rs232_mem_macro_tb.v
-vlog -work work source/testbench/rs232_ctrl_tb.v
-vlog -work work source/testbench/rs232_mem_core_tb.v
+#vlog -work work source/testbench/rs232_clk_gen_tb.v
+#vlog -work work source/testbench/rs232_mem_macro_tb.v
+#vlog -work work source/testbench/rs232_ctrl_tb.v
+#vlog -work work source/testbench/rs232_mem_core_tb.v
 vlog -work work source/testbench/rs232_memory_tb.sv
 
 ## Simulate
@@ -43,7 +43,8 @@ echo "/**             Simulate             **/"
 vsim -l rs232_mem.log -wlf rs232_mem.wlf work.rs232_memory_tb
 
 # Add all signals in design
-add wave *
+#add wave *
+#add wave -r /*
 
 # Clock generator additions
 #add wave /rs232_clk_gen_tb/DUT0/cnt
@@ -55,7 +56,6 @@ add wave *
 #add wave /rs232_ctrl_tb/DUT0/samp_rx_front
 #add wave /rs232_ctrl_tb/DUT0/del_delayed
 #add wave /rs232_ctrl_tb/DUT0/rx_buffer
-#add wave /rs232_ctrl_tb/DUT0/rx_parity_bit
 #add wave /rs232_ctrl_tb/DUT0/rx_parity_ok
 #add wave /rs232_ctrl_tb/DUT0/rx_finish
 #add wave /rs232_ctrl_tb/DUT0/tx_buffer
@@ -85,25 +85,63 @@ add wave *
 #add wave rs232_mem_core_tb/MEM_MACRO0/mem_case
 
 # RS232 Memory waves
-add wave rs232_memory_tb/DUT0/clk_rs232_en 
-add wave rs232_memory_tb/DUT0/mem_addr 
-add wave rs232_memory_tb/DUT0/mem_write 
-add wave rs232_memory_tb/DUT0/mem_data_in 
-add wave rs232_memory_tb/DUT0/mem_data_out 
-add wave rs232_memory_tb/DUT0/RS232_C0/rx_buffer 
-add wave rs232_memory_tb/DUT0/RS232_C0/tx_buffer 
-add wave rs232_memory_tb/DUT0/RS232_C0/recv_buffer 
-add wave rs232_memory_tb/DUT0/RS232_C0/send_buffer 
-add wave rs232_memory_tb/DUT0/RS232_M_C0/recv_buffer 
-add wave rs232_memory_tb/DUT0/RS232_M_C0/send_buffer 
-add wave rs232_memory_tb/DUT0/RS232_M_C0/core_cmd_word 
-add wave rs232_memory_tb/DUT0/RS232_M_C0/core_addr 
-add wave rs232_memory_tb/DUT0/RS232_M_C0/core_data 
-add wave rs232_memory_tb/DUT0/RS232_M_C0/core_er_data 
-add wave rs232_memory_tb/DUT0/RS232_M_C0/core_prot 
-add wave rs232_memory_tb/DUT0/RS232_M_C0/core_er_done 
-add wave rs232_memory_tb/DUT0/RS232_M_C0/fifo_reg 
-add wave rs232_memory_tb/DUT0/RS232_M_M0/mem_case 
+add wave rs232_memory_tb/rs232_drive/_word
+add wave rs232_memory_tb/DUT0/rx
+add wave rs232_memory_tb/DUT0/tx
+add wave rs232_memory_tb/DUT0/end_of_erase
+add wave rs232_memory_tb/DUT0/clk_rs232_en
+add wave rs232_memory_tb/DUT0/new_word
+add wave rs232_memory_tb/DUT0/send_word
+add wave rs232_memory_tb/DUT0/data_rs232_in
+add wave rs232_memory_tb/DUT0/data_rs232_out
+add wave rs232_memory_tb/DUT0/mem_addr
+add wave rs232_memory_tb/DUT0/mem_write
+add wave rs232_memory_tb/DUT0/mem_data_in
+add wave rs232_memory_tb/DUT0/mem_data_out
+add wave rs232_memory_tb/DUT0/RS232_CLK_G0/clk_rs232_en
+add wave rs232_memory_tb/DUT0/RS232_C0/new_word
+add wave rs232_memory_tb/DUT0/RS232_C0/data_rs232_in
+add wave rs232_memory_tb/DUT0/RS232_C0/del_eq_300
+add wave rs232_memory_tb/DUT0/RS232_C0/del_neq_0
+add wave rs232_memory_tb/DUT0/RS232_C0/rx_buffer
+add wave rs232_memory_tb/DUT0/RS232_C0/rx_parity_ok
+add wave rs232_memory_tb/DUT0/RS232_C0/rx_curr_state
+add wave rs232_memory_tb/DUT0/RS232_C0/rx_enable
+add wave rs232_memory_tb/DUT0/RS232_C0/rx_finish
+add wave rs232_memory_tb/DUT0/RS232_C0/tx_buffer
+add wave rs232_memory_tb/DUT0/RS232_C0/tx_parity_bit
+add wave rs232_memory_tb/DUT0/RS232_C0/tx_curr_state
+add wave rs232_memory_tb/DUT0/RS232_C0/tx_enable
+add wave rs232_memory_tb/DUT0/RS232_C0/tx_load
+add wave rs232_memory_tb/DUT0/RS232_C0/recv_buffer
+add wave rs232_memory_tb/DUT0/RS232_C0/recv_curr_state
+add wave rs232_memory_tb/DUT0/RS232_C0/recv_word_int
+add wave rs232_memory_tb/DUT0/RS232_C0/send_buffer
+add wave rs232_memory_tb/DUT0/RS232_C0/send_curr_state
+add wave rs232_memory_tb/DUT0/RS232_C0/send_word_int
+add wave rs232_memory_tb/DUT0/RS232_M_C0/send_word
+add wave rs232_memory_tb/DUT0/RS232_M_C0/data_rs232_out
+add wave rs232_memory_tb/DUT0/RS232_M_C0/end_of_erase
+add wave rs232_memory_tb/DUT0/RS232_M_C0/mem_addr
+add wave rs232_memory_tb/DUT0/RS232_M_C0/mem_write
+add wave rs232_memory_tb/DUT0/RS232_M_C0/mem_data_in
+add wave rs232_memory_tb/DUT0/RS232_M_C0/recv_buffer
+add wave rs232_memory_tb/DUT0/RS232_M_C0/recv_curr_state
+add wave rs232_memory_tb/DUT0/RS232_M_C0/recv_word_int
+add wave rs232_memory_tb/DUT0/RS232_M_C0/send_buffer
+add wave rs232_memory_tb/DUT0/RS232_M_C0/send_curr_state
+add wave rs232_memory_tb/DUT0/RS232_M_C0/core_cmd_word
+add wave rs232_memory_tb/DUT0/RS232_M_C0/core_addr_hi
+add wave rs232_memory_tb/DUT0/RS232_M_C0/core_addr_lo
+add wave rs232_memory_tb/DUT0/RS232_M_C0/core_data
+add wave rs232_memory_tb/DUT0/RS232_M_C0/core_prot
+add wave rs232_memory_tb/DUT0/RS232_M_C0/core_er_addr
+add wave rs232_memory_tb/DUT0/RS232_M_C0/core_er_data
+add wave rs232_memory_tb/DUT0/RS232_M_C0/core_curr_state
+add wave rs232_memory_tb/DUT0/RS232_M_C0/core_next_state
+add wave rs232_memory_tb/DUT0/RS232_M_C0/fifo_reg
+add wave rs232_memory_tb/DUT0/RS232_M_M0/mem_data_out
+add wave rs232_memory_tb/DUT0/RS232_M_M0/mem_case
 
 # Run for the set time in testbench
 run -all
